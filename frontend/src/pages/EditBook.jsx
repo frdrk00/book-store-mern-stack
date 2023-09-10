@@ -23,7 +23,6 @@ const EditBook = () => {
         setAuthor(res.data.author)
         setTitle(res.data.title)
         setPublishYear(res.data.publishYear)
-        enqueueSnackbar('Book Fetched Successfully', { variant: 'success' })
         setLoading(false)
       })
       .catch((err) => {
@@ -44,12 +43,13 @@ const EditBook = () => {
       .put(`http://localhost:5555/books/${id}`, data)
       .then(() => {
         setLoading(false)
+        enqueueSnackbar('Book Updated Successfully', { variant: 'success' })
         navigate('/')
       })
       .catch((err) => {
         setLoading(false)
+        enqueueSnackbar('Something went wrong', { variant: 'error' })
         console.log(err)
-        alert('An error happened. Please Check console')
       })
   }
 
