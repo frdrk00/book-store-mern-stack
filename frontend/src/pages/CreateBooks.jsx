@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { useSnackbar } from 'notistack'
 import BackButton from '../components/BackButton'
 import Spinner from '../components/Spinner'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 
 const CreateBooks = () => {
   const [title, setTitle] = useState('')
@@ -10,6 +11,7 @@ const CreateBooks = () => {
   const [publishYear, setPublishYear] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleSaveBook = () => {
     const data = {
@@ -22,12 +24,13 @@ const CreateBooks = () => {
       .post('http://localhost:5555/books', data)
       .then(() => {
         setLoading(false)
+        enqueueSnackbar('Book Created Successfully', { variant: 'success' })
         navigate('/')
       })
       .catch((err) => {
         setLoading(false)
+        enqueueSnackbar('Something went wrong', { variant: 'error' })
         console.log(err)
-        alert('An error happened. Please Check console')
       })
   }
 
@@ -56,7 +59,9 @@ const CreateBooks = () => {
           />
         </div>
         <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500 shadow-md">Publish Year</label>
+          <label className="text-xl mr-4 text-gray-500 shadow-md">
+            Publish Year
+          </label>
           <input
             type="text"
             value={publishYear}
